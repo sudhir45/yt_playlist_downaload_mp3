@@ -1,17 +1,14 @@
-# Prompt user for playlist URL
-$playlistUrl = Read-Host "Enter the YouTube playlist URL"
+# Asking for playlist URL
+$playlistUrl = Read-Host "Enter YouTube playlist URL"
 
-# Create output folder
+# Creating output folder
 $downloadDir = Join-Path $PSScriptRoot "downloads"
 New-Item -ItemType Directory -Force -Path $downloadDir | Out-Null
 
-# yt-dlp output template:
-# playlist_index: two-digit padded index
-# title: video title
-# ext: file extension (mp3)
+# audio number + title of the video + mp3
 $outputTemplate = "$downloadDir\%(playlist_index)s_%(title)s.%(ext)s"
 
-# Build yt-dlp arguments
+# add for metadata
 $ytDlpArgs = @(
     "-x",
     "--audio-format", "mp3",
@@ -22,8 +19,8 @@ $ytDlpArgs = @(
     $playlistUrl
 )
 
-# Run yt-dlp
+# Running yt-dlp with arguments
 & yt-dlp @ytDlpArgs
 
-Write-Host "`n✅ Download complete! MP3s saved to:`n$downloadDir"
+Write-Host "`n Download completed! files saved to:`n$downloadDir"
 Pause
